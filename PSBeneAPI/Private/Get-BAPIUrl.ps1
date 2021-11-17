@@ -1,4 +1,4 @@
-function Get-BAPIUrl {
+function Get-BapiUrl {
     Param(
         #Username to discover
         [String] $UserName
@@ -13,7 +13,7 @@ function Get-BAPIUrl {
         $DiscoResult = Invoke-RestMethod $DiscoveryUrl -Method GET
         if ($DiscoResult) {
             Write-Verbose "Discovery result: $($DiscoResult | ConvertTo-Json)"
-            $BAPISession.ApiUrl = $DiscoResult.apiEndpoint
+            $BAPISession.ApiUrl = $DiscoResult.apiEndpoint -replace "/$",""
         }
     }
     Catch {

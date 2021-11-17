@@ -3,15 +3,22 @@ $ScriptPath = $PSScriptRoot
 $ModuleName = $ExecutionContext.SessionState.Module
 Write-Verbose -Message "Loading module $ModuleName"
 
+#dotsource classes
+Get-ChildItem (Join-Path -Path $ScriptPath -ChildPath "Classes") -Filter *.ps1 | ForEach-Object {
+    . $_.FullName
+}
+
 #load module variables
+
 Write-Verbose -Message "Creating modules variables"
 [System.Diagnostics.CodeAnalysis.SuppressMessage('PSUseDeclaredVarsMoreThanAssigments', '')]
-$BAPISession = [ordered]@{
+$BAPISession = [BapiSession]@{
     ApiUrl      = $null
     UserName    = $null
     UserId      = $null
-    CustomerId  = $null
-    Headers     = @{}
+    Headers     = @{
+                    "Accept" = "application/json"
+                }
 }
 
 #Dot source public and private function definition files, export publich functions
